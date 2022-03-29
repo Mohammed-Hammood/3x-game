@@ -13,7 +13,6 @@ export default class Navbar extends React.Component {
         this.props.setCount(count => count + 1);
     }
     playMode = ()=> {
-        startGameOver();
         UpdateGameInfo({type:'playMode'});
         this.props.setCount(count => count + 1);
     }

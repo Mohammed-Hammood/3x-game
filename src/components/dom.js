@@ -1,3 +1,5 @@
+import {startGameOver} from './local-storage';
+
 export const PlayersAndAreas = ({drop, drag, allowDrop})=> {
 
     const area1 = document.querySelector("#_1square");
@@ -52,3 +54,49 @@ export const PlayersAndAreas = ({drop, drag, allowDrop})=> {
     area9.ondrop = drop;
     area9.ondragover = allowDrop;
 }
+export const notificationToggle = ({type=null, player=null})=> {
+    const notification = document.getElementById('notification-container');
+    const success = document.getElementById('success-notification');
+    const failure = document.getElementById('failure-notification');
+    if(type === 'success'){
+        notification.classList.remove('hidden');
+        notification.classList.add('show-f');
+        failure.classList.remove('show-f');
+        failure.classList.add('hidden');
+        success.classList.remove('hidden');
+        success.classList.add('show-f');
+      
+        if(player){
+            const player1 = document.getElementById('player1-icon');
+            const player2 = document.getElementById('player2-icon');
+            console.log('player: ', player)
+            if(player === 'user'){
+                player2.classList.add('hidden');
+                player2.classList.remove('show-f');
+                player1.classList.remove('hidden');
+                player1.classList.add('show-f');
+            }else {
+                player1.classList.add('hidden');
+                player1.classList.remove('show-f');
+                player2.classList.remove('hidden');
+                player2.classList.add('show-f');
+            }
+        }
+    }else if(type === 'failure'){
+        notification.classList.remove('hidden');
+        notification.classList.add('show-f');
+        success.classList.remove('show-f');
+        success.classList.add('hidden');
+        failure.classList.remove('hidden');
+        failure.classList.add('show-f');
+    }else {
+        notification.classList.remove('show-f');
+        notification.classList.add('hidden');
+        failure.classList.remove('show-f');
+        failure.classList.add('hidden');
+        success.classList.remove('show-f');
+        success.classList.add('hidden');
+        startGameOver();
+    }
+}
+ 

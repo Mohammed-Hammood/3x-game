@@ -31,14 +31,31 @@
                 padding:0;
                 flex:1  1 50%;
                 text-align: center;
-                .text, .scores {
+                .text {
                     border-bottom:1px solid black;
                     padding:10px;
                 }
-                .scores {
+                .scores-1, .scores-2 {
                     font-size:12px;
+                    color:blue;
+                    padding:10px;
+                }
+                .scores-1 {
+                    color:black;
                 }
             }
+        }
+    }
+    @keyframes NOTIFICIATION {
+        from {
+           opacity: 0.1;
+           filter: blur(10px);
+        }
+        20% {
+            opacity:1;
+        }
+        to{
+            filter: blur(0px);
         }
     }
     .notification-container {
@@ -46,7 +63,7 @@
         width:100%;
         height:100%;
         background-color: rgba(10, 10, 10, 0.8);
-       // filter:blur(3px);
+        animation: NOTIFICIATION 1500ms linear 1;
         top:0;
         left:0;
         z-index: 100;
@@ -69,6 +86,19 @@
             justify-content: center;
             flex-direction: column;
             gap:15px;
+            .row-2 {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap:5px;
+                font-size:14px;
+                .player1-icon, .player2-icon {
+                    svg {
+                        width:13px;
+                        max-height:20px;
+                    }
+                }
+            }
             svg {
                 width:40px;
                 height:40px;

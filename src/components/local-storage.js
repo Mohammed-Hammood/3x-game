@@ -1,14 +1,5 @@
-export const increment = ()=> {
-    if(localStorage.getItem("inc") !== null){
-        let inc = parseInt(localStorage.getItem('inc'));
-        localStorage.setItem('inc', (inc + 1));
-        return inc + 1;
-    }
-    localStorage.setItem('inc', (1));
-    return 1;
-}
 
-export const setData = ({id=id, position=position, moveStatus=false, player='user'})=> {
+export const setData = ({id, position, moveStatus=false, player='user'})=> {
     const data = getOrCreateData();
     let itemPosition = (position > 0 )?position:parseInt(position.slice(1, 2));
     const itemId = (id > 0)?id:parseInt(id.slice(1, 2));
@@ -74,18 +65,36 @@ export const ComputerActionUpdate = ()=> {
         }
         return newArray;
     }
+    const positionFreeOrNot = (playerPosition)=>{
+        for(let i = 0; i < boxes.length; i++){
+            if(!boxes[i].containsPlayer && i+1 === playerPosition){
+            //    console.log(!boxes[i].containsPlayer, i+1,  playerPosition)
+               return true;
+           }
+        }
+        return false;
+    }
     const movePlayer = ()=> {
+        let player = notMovedPlayers()[0];
         if(notMovedPlayers().length > 0){
-            let player = notMovedPlayers()[0];
             setData({id:player, position:freePositions()[0], player:'computer'});
         }
-        else if(getUserPlayersPositions().length > 0){
+        else if(getUserPlayersPositions().length > 0) {
+            for(let i =0; i < getUserPlayersPositions().length; i++){
+                for(let k = 0; k < getUserPlayersPositions()[i].length; k++){
+                       // console.log('position fee: ', positionFreeOrNot(getUserPlayersPositions()[i][k]), positionFreeOrNot(3))
+                        if(positionFreeOrNot(getUserPlayersPositions()[i][k])){
+                            console.log(getUserPlayersPositions()[i][k])
+                            setData({id:4, position:getUserPlayersPositions()[i][k], player:'computer'});
+
+                        }
+                    }
+            }
             //let p1 =getUserPlayers() getUserPlayersPositions()[0]
         }
+        console.log(getUserPlayersPositions());
     }
-    //console.log(checkPlayers(), ', empty position: ', freePositions())
     movePlayer();
-  //  console.log(notMovedPlayers(), ', empty position: ', freePositions())
 }
 export const checkWinner = (player)=> {
     const data = getOrCreateData();
@@ -180,7 +189,6 @@ const includesPlayer = (index)=> {
     return false;
 }
 export const getBoxes = (flag=null)=> {
-    console.log('flag: ', flag)
     let boxes = [];
     for(let i = 1; i <= 9; i++){
         let container = {
@@ -196,12 +204,12 @@ export const getBoxes = (flag=null)=> {
 export const getPlayer = (index, src=null)=> {
     const data = getOrCreateData();
     for(let i = 0; i < data.length; i++){
-        //  console.log('index: ', data[i].position, index+1)
         if(data[i].position === index+1)return data[i];
     }
     return {};
 }
 export const resetGame = ()=> {
+    console.log('reset')
     if(localStorage.getItem('3x-game') !== null){
         localStorage.removeItem('3x-game');
     }
@@ -230,13 +238,16 @@ export const getGameInfo = (type=null)=> {
     else{return item;}
 }
 export const UpdateGameInfo = ({player, type=null})=> {
-    const data = getGameInfo();
+    let data = getGameInfo();
     if(player === 'user' && !type){
         data.userScore =  data.userScore + 1;
     }else if(player === 'computer' && !type){
         data.computerScore =  data.computerScore + 1;
     }else if(type === 'playMode'){
-        if(data.playMode === 'single-player'){data.playMode = 'two-players';}
+        resetGame(); 
+        const currentPlayMode = data.playMode;
+        data = getGameInfo();
+        if(currentPlayMode === 'single-player'){data.playMode = 'two-players';}
         else{data.playMode = 'single-player';}
     }
     localStorage.setItem('3x-game-info', JSON.stringify(data));
