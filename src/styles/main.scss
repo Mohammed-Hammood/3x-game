@@ -1,0 +1,29 @@
+* {
+    margin:0;
+    box-sizing: border-box;
+}
+html {
+    margin:0;
+    padding:0;
+}
+.hidden {
+    display: none;
+}
+.show-f {
+    display: flex;
+}
+.svg {
+    width: 14px;
+    max-height: 15px;
+}
+
+#single-mode-icon-container {
+    svg {
+        width:10px;
+    }
+}
+#two-mode-icon-container {
+    svg {
+        width:14px;
+    }
+}

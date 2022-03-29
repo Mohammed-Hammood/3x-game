@@ -1,0 +1,58 @@
+<html>
+    <head>
+        <style>
+            #draggable-item
+{
+    background-color: #fc0;
+    width: 100px;
+    height: 100px;
+}
+
+#drop-area-1, #drop-area-2
+{
+    display: inline-block;
+    border: 1px #c0c0c0 solid;
+    width: 200px;
+    height: 200px;
+    margin: 5px;
+}
+        </style>
+    </head>
+    <body>
+        <div id="draggable-item" draggable="true"></div>
+        <div id="drop-area-1"></div>
+        <div id="drop-area-2"></div>
+<script>
+function allowDrop(e) {
+    e = e||window.event;
+
+    e.preventDefault();
+}
+
+function drag(e) {
+    e = e||window.event;
+
+    e.dataTransfer.setData("text", e.target.id);
+}
+
+function drop(e) {
+    e = e||window.event;
+    e.preventDefault();
+    var data = e.dataTransfer.getData("text");
+    e.target.appendChild(document.getElementById(data));
+}
+
+    var area1 = document.getElementById("drop-area-1");
+    var area2 = document.getElementById("drop-area-2");
+    var draggable = document.getElementById("draggable-item");
+
+    draggable.ondragstart = drag;
+    area1.ondrop = drop;
+    area1.ondragover = allowDrop;
+
+    area2.ondrop = drop;
+    area2.ondragover = allowDrop;
+
+</script>
+    </body>
+</html>
