@@ -1,20 +1,21 @@
 import '../styles/home.scss';
 import {UpdateGameInfo, checkWinner, setData, getBoxes, getPlayer, getGameInfo } from './local-storage';
 import SVG from './svg';
-import { useState } from 'react';
+import {useContext, useState } from 'react';
 import { PlayersAndAreas, notificationToggle } from './dom';
 import RenderBoxes from './boxes';
+import {myContext} from './context';
 
 
 export default function Home(props){
   //const [boxes, setBoxes] = useState(getBoxes('state'));
  // const [playMode, setPlayMode] = useState(getGameInfo('playMode'));
-//   const [userScore, setUserScore] = useState(getGameInfo('userScore'));
-//   const [computerScore, setComputerScore] = useState(getGameInfo('computerScore'));
-//   const [count, setCount] = useState(1);
+  const [userScore, setUserScore] = useState(getGameInfo('userScore'));
+  const [computerScore, setComputerScore] = useState(getGameInfo('computerScore'));
 
   //  const [player, setPlayers] = useState(getPlayer())
   window.addEventListener('load', function (){
+      
         function allowDrop(e) {
             e = e||window.event;
             if(e.target.children.length === 0 && !e.target.className.includes('player')){
@@ -37,6 +38,7 @@ export default function Home(props){
                     if(checkWinner(player)){
                         notificationToggle({type:'success', player:player});
                         UpdateGameInfo({player:player});
+                        setUserScore(score => score + 1);
                     }else if(checkWinner('computer')) {
                         UpdateGameInfo({player:'computer'});
                         notificationToggle({type:'failure', player:'computer'});
@@ -49,22 +51,20 @@ export default function Home(props){
                         notificationToggle({type:'success', player:player});
                     }
                 }
-                //setBoxes(getBoxes());
             }
-          //  props.setCount(count => count + 1);
-
         }
         PlayersAndAreas({drop:drop, drag:drag, allowDrop:allowDrop});
     });
-    
     return (<div className='home-container'>
                 <div className='info-container'>
+
+
                     <div className='row-1'>
                         <div className='user-score'>
                             <div className='text' title='You'>
                                 <SVG name='user' color='black' />
                             </div>
-                            <div className='scores-1'>{getGameInfo('userScore')}</div>
+                            <div className='scores-1'>{userScore}</div>
                         </div>
                         <div className='computer-score'>
                             <div className='text' title='Your oponent'>
@@ -72,7 +72,7 @@ export default function Home(props){
                                 <SVG name='desktop' color='blue' />
                                 :<SVG name='user-unfilled' color='blue' />}
                             </div>
-                            <div className='scores-2'>{getGameInfo('computerScore')}</div>
+                            <div className='scores-2'>{computerScore}</div>
                         </div>
                     </div>
                     <div className='row-2'></div>

@@ -2,18 +2,15 @@ import '../styles/home.scss';
 import { getBoxes, getPlayer, getGameInfo } from './local-storage';
 import SVG from './svg';
 import { useEffect, useState } from 'react';
-
+import { useContext } from 'react';
+import { myContext } from './context';
 
 export default function RenderBoxes(props){
-  const [playMode, setPlayMode] = useState(props.playMode);
-    useEffect(()=>{
-        setPlayMode(props.playMode);
-        console.log(props.playMode)
-    }, [props.playMode])
+    const {boxes, ...rest} = useContext(myContext);
     return (<>
             <div className='main-container'>
              
-                {getBoxes().map((item, index)=> {return (
+                {boxes.map((item, index)=> {return (
                         <div className={item.className} key={index} id={item.id}>
                         {(item.containsPlayer)? 
                             <div className={(getGameInfo('playMode') === 'two-players')?(getPlayer(index).className) :

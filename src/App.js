@@ -1,16 +1,13 @@
 import  Navbar  from "./components/navbar";
 import Home from './components/home';
 import './styles/main.scss';
-import { useState } from "react";
-import {getBoxes} from './components/local-storage';
+import {ContextProvider} from "./components/context";
 
-function App() {
-  const [count, setCount] = useState(0);
- 
+export default function App() {
   return (<>
-      <Navbar setCount={setCount} />
-        <Home setCount={setCount} count={count} />
-      </>);
+    <ContextProvider>
+      <Navbar />
+        <Home  />
+    </ContextProvider>
+    </>);
 }
-
-export default App;
